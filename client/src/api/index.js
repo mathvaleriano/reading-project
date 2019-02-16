@@ -1,8 +1,15 @@
 const BASE_URL = 'localhost:3001';
+let auth = localStorage.getItem('auth');
+
+if (!auth) {
+  auth = new Date().toISOString();
+  localStorage.setItem('auth', auth);
+}
 
 const defaultHeaders = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
+  Authorization: auth,
 };
 
 const tryAwaitRequest = async (req) => {
