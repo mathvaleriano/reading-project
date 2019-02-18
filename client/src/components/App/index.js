@@ -1,9 +1,13 @@
 import React from 'react';
-import Provider from '../Provider';
+import { Provider } from 'react-redux';
+import store from '../../store';
+import PostAdd from '../PostAdd';
+import PostList from '../PostList';
 
 const App = () => (
-  <Provider>
-    <div />
+  <Provider store={store}>
+    <PostAdd />
+    <PostList />
   </Provider>
 );
 
