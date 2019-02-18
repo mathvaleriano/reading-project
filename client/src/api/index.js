@@ -1,4 +1,4 @@
-const BASE_URL = 'localhost:3001';
+const BASE_URL = 'http://localhost:3001';
 let auth = localStorage.getItem('auth');
 
 if (!auth) {
@@ -27,7 +27,7 @@ export const doRequest = ({
 }) => tryAwaitRequest(
   fetch(`${BASE_URL}${url}`, {
     method,
-    body,
+    body: body && JSON.stringify(body),
     headers: {
       ...defaultHeaders,
       ...headers,
