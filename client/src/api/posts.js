@@ -1,24 +1,24 @@
 import { doRequest } from '.';
 
-export const getPosts = (id = '') => doRequest({ url: `/posts/${id}` });
+const getPosts = (id = '') => doRequest({ url: `/posts/${id}` });
 
-export const getPostsByCategory = category => doRequest({
+const getPostsByCategory = category => doRequest({
   url: `/${category}/posts`,
 });
 
-export const addPost = post => doRequest({
+const addPost = post => doRequest({
   body: post,
   method: 'POST',
   url: '/posts',
 });
 
-export const updatePost = ({ body, id, title } = {}) => doRequest({
+const updatePost = ({ body, id, title } = {}) => doRequest({
   body: { body, title },
   method: 'PUT',
   url: `/posts/${id}`,
 });
 
-export const removePost = id => doRequest({
+const removePost = id => doRequest({
   url: `/posts/${id}`,
   method: 'DELETE',
 });
@@ -29,9 +29,9 @@ const votePost = option => id => doRequest({
   url: `/posts/${id}`,
 });
 
-export const upVotePost = votePost('upVote');
+const upVotePost = votePost('upVote');
 
-export const downVotePost = votePost('downVote');
+const downVotePost = votePost('downVote');
 
 export default {
   addPost,
