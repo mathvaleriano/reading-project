@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Feed } from 'semantic-ui-react';
+import { Feed, Container } from 'semantic-ui-react';
+import Header from './Header';
 import Post from '../Post';
 import {
   getPosts as getPostsAction,
@@ -13,12 +14,15 @@ const PostList = ({ getPosts, posts = [] }) => {
   }, []);
 
   return (
-    <Feed>
-      { posts.length
-        ? posts.map(post => <Post {...post} key={post.id} />)
-        : 'No posts found'
-      }
-    </Feed>
+    <Container>
+      <Header />
+      <Feed>
+        { posts.length
+          ? posts.map(post => <Post {...post} key={post.id} />)
+          : 'No posts found'
+        }
+      </Feed>
+    </Container>
   );
 };
 
