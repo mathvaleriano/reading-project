@@ -49,3 +49,5 @@ Comment.propTypes = {
 Comment.defaultProps = {
   voteScore: 0,
 };
+
+export default Comment;

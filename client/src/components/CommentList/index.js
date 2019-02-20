@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Comment as SUIComment } from 'semantic-ui-react';
 import Comment from '../Comment';
 
-const CommentList = ({ postId, comments = [] }) => (
+const CommentList = ({ comments = [] }) => (
   <SUIComment.Group>
     { comments.length > 0
       && comments.map(comment => <Comment {...comment} key={comment.id} />)
@@ -12,7 +12,6 @@ const CommentList = ({ postId, comments = [] }) => (
 );
 
 CommentList.propTypes = {
-  postId: PropTypes.string.isRequired,
   comments: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

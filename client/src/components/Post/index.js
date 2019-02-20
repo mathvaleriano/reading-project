@@ -22,5 +22,4 @@ Post.propTypes = {
   body: PropTypes.string.isRequired,
 };
 
-
 export default Post;
