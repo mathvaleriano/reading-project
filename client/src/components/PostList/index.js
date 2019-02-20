@@ -6,9 +6,10 @@ import Header from './Header';
 import Post from '../Post';
 import {
   getPosts as getPostsAction,
+  setCurrentPost,
 } from '../../store/posts/actions';
 
-const PostList = ({ getPosts, posts = [] }) => {
+const PostList = ({ getPosts, onClickComments, posts = [] }) => {
   useEffect(() => {
     getPosts();
   }, []);
@@ -18,7 +19,13 @@ const PostList = ({ getPosts, posts = [] }) => {
       <Header />
       <Feed>
         { posts.length
-          ? posts.map(post => <Post {...post} key={post.id} />)
+          ? posts.map(post => (
+            <Post
+              {...post}
+              key={post.id}
+              onClickComments={() => onClickComments(post)}
+            />
+          ))
           : 'No posts found'
         }
       </Feed>
@@ -28,6 +35,7 @@ const PostList = ({ getPosts, posts = [] }) => {
 
 PostList.propTypes = {
   getPosts: PropTypes.func.isRequired,
+  onClickComments: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape({
       author: PropTypes.string.isRequired,
@@ -50,6 +58,7 @@ const mapStateToProps = ({ posts: { posts } }) => ({
 
 const mapDispatchToProps = {
   getPosts: getPostsAction,
+  onClickComments: setCurrentPost,
 };
 
 export default connect(
