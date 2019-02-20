@@ -3,6 +3,7 @@ const initialState = {
   posts: [],
   filteredPosts: [],
   errors: [],
+  currentPost: undefined,
 };
 
 export default initialState;

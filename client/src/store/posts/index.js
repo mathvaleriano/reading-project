@@ -6,6 +6,7 @@ import {
   ADD_POST,
   REMOVE_POST,
   UPDATE_POST,
+  SET_CURRENT_POST,
 } from './types';
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -13,6 +14,7 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_ERRORS:
     case IS_FETCHING:
     case SET_POSTS:
+    case SET_CURRENT_POST:
       return { ...state, ...payload };
     case ADD_POST:
       return { ...state, posts: [payload, ...state.posts] };

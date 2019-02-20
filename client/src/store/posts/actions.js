@@ -6,6 +6,7 @@ import {
   ADD_POST,
   REMOVE_POST,
   UPDATE_POST,
+  SET_CURRENT_POST,
 } from './types';
 
 const setErrors = (errors = []) => ({
@@ -96,3 +97,8 @@ export const handleUpdatePost = ({ body, post, title }) => async (dispatch) => {
     throw e;
   }
 };
+
+export const setCurrentPost = currentPost => ({
+  type: SET_CURRENT_POST,
+  payload: { currentPost },
+});
