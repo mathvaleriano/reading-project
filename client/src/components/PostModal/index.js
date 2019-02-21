@@ -10,20 +10,20 @@ import {
 
 const PostModal = ({ currentPost, onClose }) => (
   <Modal
-    open={currentPost}
+    open={!!currentPost}
     onClose={() => onClose()}
     size="tiny"
   >
     { currentPost
-      && (
-      <Modal.Content scrolling>
-        <Feed>
-          <Post {...currentPost} />
-        </Feed>
-        <CommentList postId={currentPost.id} />
-      </Modal.Content>
-      )
-    }
+        && (
+        <Modal.Content scrolling>
+          <Feed>
+            <Post {...currentPost} />
+          </Feed>
+          <CommentList />
+        </Modal.Content>
+        )
+      }
   </Modal>
 );
 
