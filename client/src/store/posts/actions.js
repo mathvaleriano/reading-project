@@ -1,13 +1,15 @@
 import postsApi from '../../api/posts';
 import {
   SET_ERRORS,
-  IS_FETCHING,
+  IS_FETCHING_POSTS,
   SET_POSTS,
   ADD_POST,
   REMOVE_POST,
+  UNDO_REMOVE_POST,
   UPDATE_POST,
   SET_CURRENT_POST,
 } from './types';
+import { getComments, setComments } from '../comments/actions';
 
 const setErrors = (errors = []) => ({
   type: SET_ERRORS,
@@ -24,7 +26,7 @@ export const handleSetErrors = errors => (dispatch) => {
 };
 
 export const setIsFetching = isFetching => ({
-  type: IS_FETCHING,
+  type: IS_FETCHING_POSTS,
   payload: { isFetching },
 });
 
@@ -61,23 +63,28 @@ export const removePost = postId => ({
   payload: postId,
 });
 
+export const undoRemovePost = postId => ({
+  type: UNDO_REMOVE_POST,
+  payload: postId,
+});
+
 export const handleAddPost = post => async (dispatch) => {
   try {
     dispatch(addPost(post));
     await postsApi.addPost(post);
   } catch (e) {
-    dispatch(removePost);
+    // TODO: remover da listagem dispatch(removePost);
     throw e;
   }
 };
 
 export const handleRemovePost = post => async (dispatch) => {
+  const { id } = post;
   try {
-    const { id } = post;
     dispatch(removePost(id));
     await postsApi.removePost(id);
   } catch (e) {
-    dispatch(addPost(post));
+    dispatch(undoRemovePost(id));
     throw e;
   }
 };
@@ -87,7 +94,11 @@ export const updatePost = ({ body, id, title }) => ({
   payload: { id, body, title },
 });
 
-export const handleUpdatePost = ({ body, post, title }) => async (dispatch) => {
+export const handleUpdatePost = ({
+  body,
+  post,
+  title,
+}) => async (dispatch) => {
   try {
     const { id } = post;
     dispatch(updatePost({ body, id, title }));
@@ -102,3 +113,13 @@ export const setCurrentPost = currentPost => ({
   type: SET_CURRENT_POST,
   payload: { currentPost },
 });
+
+export const handleSetCurrentPost = currentPost => (dispatch) => {
+  dispatch(setCurrentPost(currentPost));
+
+  if (currentPost.id) {
+    dispatch(getComments(currentPost.id));
+  } else {
+    dispatch(setComments());
+  }
+};
