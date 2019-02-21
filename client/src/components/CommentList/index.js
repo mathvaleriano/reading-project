@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Comment as SUIComment } from 'semantic-ui-react';
 import Comment from '../Comment';
 
@@ -27,4 +28,8 @@ CommentList.defaultProps = {
   comments: [],
 };
 
-export default CommentList;
+const mapStateToProps = ({ comments: { comments } }) => ({
+  comments,
+});
+
+export default connect(mapStateToProps)(CommentList);
