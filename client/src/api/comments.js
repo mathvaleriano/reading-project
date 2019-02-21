@@ -1,16 +1,16 @@
 import { doRequest } from '.';
 
-export const getComments = postId => doRequest({
+const getComments = postId => doRequest({
   url: `/posts/${postId}/comments`,
 });
 
-export const updateComment = ({ body, id }) => doRequest({
-  body: { body },
+const updateComment = ({ body, id, timestamp }) => doRequest({
+  body: { body, timestamp },
   method: 'PUT',
   url: `/comments/${id}`,
 });
 
-export const removeComment = id => doRequest({
+const removeComment = id => doRequest({
   method: 'DELETE',
   url: `/comments/${id}`,
 });
@@ -21,8 +21,8 @@ const voteComment = option => id => doRequest({
   url: `/comments/${id}`,
 });
 
-export const upVoteComment = voteComment('upVote');
-export const downVoteComment = voteComment('downVote');
+const upVoteComment = voteComment('upVote');
+const downVoteComment = voteComment('downVote');
 
 export default {
   getComments,
