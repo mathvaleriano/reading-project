@@ -6,7 +6,7 @@ import Header from './Header';
 import Post from '../Post';
 import {
   getPosts as getPostsAction,
-  setCurrentPost,
+  handleSetCurrentPost,
 } from '../../store/posts/actions';
 
 const PostList = ({ getPosts, onClickComments, posts = [] }) => {
@@ -58,7 +58,7 @@ const mapStateToProps = ({ posts: { posts } }) => ({
 
 const mapDispatchToProps = {
   getPosts: getPostsAction,
-  onClickComments: setCurrentPost,
+  onClickComments: handleSetCurrentPost,
 };
 
 export default connect(
