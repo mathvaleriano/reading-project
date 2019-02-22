@@ -30,11 +30,13 @@ const PostAdd = ({ onAddPost }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Input
+        required
         fluid
         placeholder="What's happening?"
         onChange={handleChange('title')}
       />
       <Form.TextArea
+        required
         placeholder="Explain..."
         onChange={handleChange('body')}
       />
