@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Form as SUIForm, Icon } from 'semantic-ui-react';
+import { Form as SUIForm } from 'semantic-ui-react';
 import { handleAddPost } from '../../store/posts/actions';
 import Form from '../Form';
 
-const PostAdd = ({ onAddPost }) => (
-  <Form onSubmit={onAddPost}>
+const PostAdd = ({ onSubmit }) => (
+  <Form onSubmit={onSubmit}>
     <SUIForm.Input
       required
       fluid
@@ -18,19 +18,15 @@ const PostAdd = ({ onAddPost }) => (
       placeholder="Explain..."
       name="body"
     />
-    <SUIForm.Button primary icon labelPosition="right">
-        Send
-      <Icon name="send" />
-    </SUIForm.Button>
   </Form>
 );
 
 PostAdd.propTypes = {
-  onAddPost: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  onAddPost: handleAddPost,
+  onSubmit: handleAddPost,
 };
 
 export default connect(null, mapDispatchToProps)(PostAdd);
