@@ -4,22 +4,25 @@ import { connect } from 'react-redux';
 import { Modal, Feed } from 'semantic-ui-react';
 import Post from '../Post';
 import CommentList from '../CommentList';
+import CommentAdd from '../CommentAdd';
 import {
   setCurrentPost,
 } from '../../store/posts/actions';
 
 const PostModal = ({ currentPost, onClose }) => (
   <Modal
-    open={!!currentPost}
+    closeIcon
     onClose={() => onClose()}
+    open={!!currentPost}
     size="tiny"
   >
     { currentPost
         && (
-        <Modal.Content scrolling>
+        <Modal.Content>
           <Feed>
             <Post {...currentPost} />
           </Feed>
+          <CommentAdd postId={currentPost.id} />
           <CommentList />
         </Modal.Content>
         )
