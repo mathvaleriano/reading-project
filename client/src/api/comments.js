@@ -4,6 +4,12 @@ const getComments = postId => doRequest({
   url: `/posts/${postId}/comments`,
 });
 
+const addComment = comment => doRequest({
+  body: comment,
+  method: 'POST',
+  url: '/comments',
+});
+
 const updateComment = ({ body, id, timestamp }) => doRequest({
   body: { body, timestamp },
   method: 'PUT',
@@ -25,6 +31,7 @@ const upVoteComment = voteComment('upVote');
 const downVoteComment = voteComment('downVote');
 
 export default {
+  addComment,
   getComments,
   updateComment,
   removeComment,
