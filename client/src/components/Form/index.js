@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
-import { Form as SUIFORM } from 'semantic-ui-react';
+import { Form as SUIForm, Icon } from 'semantic-ui-react';
 
 const Form = ({ children, onSubmit }) => {
   const handleSubmit = (e) => {
@@ -9,27 +9,39 @@ const Form = ({ children, onSubmit }) => {
     e.stopPropagation();
 
     const { target } = e;
-    const data = serialize(target, { hash: true });
     const now = new Date();
+    const {
+      id = now.toISOString(),
+      ...data
+    } = serialize(target, { hash: true });
     const post = {
       ...data,
       timestamp: now.getTime(),
       author: 'You',
-      id: now.toISOString(),
+      id,
     };
-    onSubmit(post);
-    target.reset();
+
+    onSubmit(post)
+      .then(() => target.reset());
   };
 
   return (
-    <SUIFORM onSubmit={handleSubmit}>
+    <SUIForm onSubmit={handleSubmit}>
       {children}
-    </SUIFORM>
+      <SUIForm.Button
+        primary
+        icon
+        labelPosition="right"
+      >
+          Send
+        <Icon name="send" />
+      </SUIForm.Button>
+    </SUIForm>
   );
 };
 
 Form.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
   onSubmit: PropTypes.func,
 };
 
