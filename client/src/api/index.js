@@ -13,13 +13,9 @@ const defaultHeaders = {
 };
 
 const tryAwaitRequest = async (req) => {
-  try {
-    const response = await req;
-    const data = await response.json();
-    return data;
-  } catch (e) {
-    throw e;
-  }
+  const response = await req;
+  const data = await response.json();
+  return data;
 };
 
 export const doRequest = ({
