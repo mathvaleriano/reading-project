@@ -1,7 +1,7 @@
 import {
   SET_CATEGORIES,
   SET_CURRENT_CATEGORY,
-} from './types.js';
+} from './types';
 import initialState from './state';
 
 const reducer = (state = initialState, { type, payload }) => {
