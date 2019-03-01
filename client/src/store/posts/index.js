@@ -8,8 +8,8 @@ import {
   UNDO_REMOVE_POST,
   UPDATE_POST,
   SET_CURRENT_POST,
-  UP_VOTE,
-  DOWN_VOTE,
+  UP_VOTE_POST,
+  DOWN_VOTE_POST,
 } from './types';
 
 const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
@@ -64,12 +64,12 @@ const reducer = (state = initialState, { type, payload }) => {
         ...state,
         posts: state.posts.map(updatePost(payload)),
       };
-    case UP_VOTE:
+    case UP_VOTE_POST:
       return {
         ...state,
         posts: state.posts.map(upVote(payload.id)),
       };
-    case DOWN_VOTE:
+    case DOWN_VOTE_POST:
       return {
         ...state,
         posts: state.posts.map(downVote(payload.id)),

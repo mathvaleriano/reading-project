@@ -6,5 +6,5 @@ export const REMOVE_POST = 'REMOVE_POST';
 export const UNDO_REMOVE_POST = 'UNDO_REMOVE_POST';
 export const UPDATE_POST = 'UPDATE_POST';
 export const SET_CURRENT_POST = 'SET_CURRENT_POST';
-export const UP_VOTE = 'UP_VOTE';
-export const DOWN_VOTE = 'DOWN_VOTE';
+export const UP_VOTE_POST = 'UP_VOTE_POST';
+export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';

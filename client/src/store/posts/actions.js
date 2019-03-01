@@ -8,8 +8,8 @@ import {
   UNDO_REMOVE_POST,
   UPDATE_POST,
   SET_CURRENT_POST,
-  DOWN_VOTE,
-  UP_VOTE,
+  DOWN_VOTE_POST,
+  UP_VOTE_POST,
 } from './types';
 import { getComments, setComments } from '../comments/actions';
 
@@ -127,12 +127,12 @@ export const handleSetCurrentPost = currentPost => (dispatch) => {
 };
 
 const upVote = id => ({
-  type: UP_VOTE,
+  type: UP_VOTE_POST,
   payload: { id },
 });
 
 const downVote = id => ({
-  type: DOWN_VOTE,
+  type: DOWN_VOTE_POST,
   payload: { id },
 });
 
