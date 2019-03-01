@@ -75,13 +75,12 @@ export const handleAddPost = post => async (dispatch) => {
     dispatch(addPost(post));
     await postsApi.addPost(post);
   } catch (e) {
-    // TODO: remover da listagem dispatch(removePost);
+    dispatch(removePost(post.id));
     throw e;
   }
 };
 
-export const handleRemovePost = post => async (dispatch) => {
-  const { id } = post;
+export const handleRemovePost = id => async (dispatch) => {
   try {
     dispatch(removePost(id));
     await postsApi.removePost(id);
