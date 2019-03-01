@@ -7,6 +7,8 @@ import {
   UNDO_REMOVE_COMMENT,
   UPDATE_COMMENT,
   IS_FETCHING_COMMENTS,
+  UP_VOTE_COMMENT,
+  DOWN_VOTE_COMMENT,
 } from './types';
 
 const setErrors = (errors = []) => ({
@@ -98,5 +100,33 @@ export const handleUpdateComment = ({
   } catch (e) {
     dispatch(updateComment(comment));
     throw e;
+  }
+};
+
+const upVote = id => ({
+  type: UP_VOTE_COMMENT,
+  payload: { id },
+});
+
+const downVote = id => ({
+  type: DOWN_VOTE_COMMENT,
+  payload: { id },
+});
+
+export const handleUpVote = id => async (dispatch) => {
+  try {
+    dispatch(upVote(id));
+    await commentsApi.upVoteComment(id);
+  } catch (e) {
+    dispatch(downVote(id));
+  }
+};
+
+export const handleDownVote = id => async (dispatch) => {
+  try {
+    dispatch(downVote(id));
+    await commentsApi.downVoteComment(id);
+  } catch (e) {
+    dispatch(upVote(id));
   }
 };
