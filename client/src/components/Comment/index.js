@@ -5,6 +5,7 @@ import { Comment as SUIComment, Icon } from 'semantic-ui-react';
 import {
   handleUpVote,
   handleDownVote,
+  handleRemoveComment,
 } from '../../store/comments/actions';
 
 const Comment = memo(({
@@ -13,6 +14,7 @@ const Comment = memo(({
   id,
   onClickDownVote,
   onClickUpVote,
+  onClickRemove,
   timestamp,
   voteScore = 0,
 }) => (
@@ -40,6 +42,15 @@ const Comment = memo(({
           {' '}
           {voteScore}
         </SUIComment.Action>
+
+        { author === 'You'
+          && (
+            <SUIComment.Action onClick={() => onClickRemove(id)}>
+              <Icon name="trash" />
+              Remove
+            </SUIComment.Action>
+          )
+        }
       </SUIComment.Actions>
     </SUIComment.Content>
   </SUIComment>
@@ -51,6 +62,7 @@ Comment.propTypes = {
   body: PropTypes.string.isRequired,
   onClickDownVote: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
+  onClickRemove: PropTypes.func.isRequired,
   timestamp: PropTypes.number.isRequired,
   voteScore: PropTypes.number,
 };
@@ -62,6 +74,7 @@ Comment.defaultProps = {
 const mapDispatchToProps = {
   onClickDownVote: handleDownVote,
   onClickUpVote: handleUpVote,
+  onClickRemove: handleRemoveComment,
 };
 
 export default connect(

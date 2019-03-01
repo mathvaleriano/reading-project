@@ -67,13 +67,12 @@ export const handleAddComment = comment => async (dispatch) => {
     dispatch(addComment(comment));
     await commentsApi.addComment(comment);
   } catch (e) {
-    //  TODO remover da listagem : dispatch(removeComment);
+    dispatch(removeComment(comment.id));
     throw e;
   }
 };
 
-export const handleRemoveComment = comment => async (dispatch) => {
-  const { id } = comment;
+export const handleRemoveComment = id => async (dispatch) => {
   try {
     dispatch(removeComment(id));
     await commentsApi.removeComment(id);
