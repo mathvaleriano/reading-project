@@ -7,7 +7,10 @@ import Comment from '../Comment';
 const CommentList = ({ comments = [] }) => (
   <SUIComment.Group>
     { comments.length > 0
-      && comments.map(comment => <Comment {...comment} key={comment.id} />)
+      && comments.map(comment => (
+        !comment.deleted
+        && <Comment {...comment} key={comment.id} />
+      ))
     }
   </SUIComment.Group>
 );

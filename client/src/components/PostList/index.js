@@ -20,11 +20,13 @@ const PostList = ({ getPosts, onClickComments, posts = [] }) => {
       <Feed>
         { posts.length
           ? posts.map(post => (
-            <Post
-              {...post}
-              key={post.id}
-              onClickComments={() => onClickComments(post)}
-            />
+            !post.deleted && (
+              <Post
+                {...post}
+                key={post.id}
+                onClickComments={() => onClickComments(post)}
+              />
+            )
           ))
           : 'No posts found'
         }
