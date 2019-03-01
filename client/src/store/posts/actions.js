@@ -8,6 +8,8 @@ import {
   UNDO_REMOVE_POST,
   UPDATE_POST,
   SET_CURRENT_POST,
+  DOWN_VOTE,
+  UP_VOTE,
 } from './types';
 import { getComments, setComments } from '../comments/actions';
 
@@ -121,5 +123,33 @@ export const handleSetCurrentPost = currentPost => (dispatch) => {
     dispatch(getComments(currentPost.id));
   } else {
     dispatch(setComments());
+  }
+};
+
+const upVote = id => ({
+  type: UP_VOTE,
+  payload: { id },
+});
+
+const downVote = id => ({
+  type: DOWN_VOTE,
+  payload: { id },
+});
+
+export const handleUpVote = id => async (dispatch) => {
+  try {
+    dispatch(upVote(id));
+    await postsApi.upVotePost(id);
+  } catch (e) {
+    dispatch(downVote(id));
+  }
+};
+
+export const handleDownVote = id => async (dispatch) => {
+  try {
+    dispatch(downVote(id));
+    await postsApi.downVotePost(id);
+  } catch (e) {
+    dispatch(upVote(id));
   }
 };
