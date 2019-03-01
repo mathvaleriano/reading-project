@@ -30,7 +30,13 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_COMMENTS:
       return { ...state, ...payload };
     case ADD_COMMENT:
-      return { ...state, comments: [payload, ...state.comments] };
+      return {
+        ...state,
+        comments: [
+          { ...payload, voteScore: 1 },
+          ...state.comments,
+        ],
+      };
     case REMOVE_COMMENT:
       return {
         ...state,

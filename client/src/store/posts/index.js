@@ -42,7 +42,13 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_CURRENT_POST:
       return { ...state, ...payload };
     case ADD_POST:
-      return { ...state, posts: [payload, ...state.posts] };
+      return {
+        ...state,
+        posts: [
+          { ...payload, voteScore: 1 },
+          ...state.posts,
+        ],
+      };
     case REMOVE_POST:
       return {
         ...state,
