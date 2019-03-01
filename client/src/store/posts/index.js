@@ -8,6 +8,8 @@ import {
   UNDO_REMOVE_POST,
   UPDATE_POST,
   SET_CURRENT_POST,
+  UP_VOTE,
+  DOWN_VOTE,
 } from './types';
 
 const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
@@ -17,12 +19,20 @@ const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
 const removePost = toggleDeletedPost(true);
 const undoRemovePost = toggleDeletedPost(false);
 
-const updatePost = ({ posts = [], newValues }) => posts.map(
-  post => (post.id === newValues.id
-    ? { ...post, ...newValues }
+const updatePost = propsToUpdate => post => (
+  post.id === propsToUpdate.id
+    ? { ...post, ...propsToUpdate }
     : post
-  ),
 );
+
+const toggleVote = ({ postId, voteScoreModifier }) => post => (
+  post.id === postId
+    ? { ...post, voteScore: post.voteScore + voteScoreModifier }
+    : post
+);
+
+const upVote = postId => toggleVote({ postId, voteScoreModifier: 1 });
+const downVote = postId => toggleVote({ postId, voteScoreModifier: -1 });
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -46,7 +56,17 @@ const reducer = (state = initialState, { type, payload }) => {
     case UPDATE_POST:
       return {
         ...state,
-        posts: updatePost({ posts: state.posts, newValues: payload }),
+        posts: state.posts.map(updatePost(payload)),
+      };
+    case UP_VOTE:
+      return {
+        ...state,
+        posts: state.posts.map(upVote(payload.id)),
+      };
+    case DOWN_VOTE:
+      return {
+        ...state,
+        posts: state.posts.map(downVote(payload.id)),
       };
     default:
       return state;
