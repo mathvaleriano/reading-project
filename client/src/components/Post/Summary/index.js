@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Feed } from 'semantic-ui-react';
 
-const Summary = ({
+const Summary = memo(({
   author,
   timestamp,
   title,
@@ -14,7 +14,7 @@ const Summary = ({
     {' '}
     <Feed.Date>{new Date(timestamp).toLocaleString()}</Feed.Date>
   </Feed.Summary>
-);
+));
 
 Summary.propTypes = {
   author: PropTypes.string.isRequired,

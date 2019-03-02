@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Comment as SUIComment } from 'semantic-ui-react';
 import Comment from '../Comment';
 
-const CommentList = ({ comments = [] }) => (
+const CommentList = memo(({ comments = [] }) => (
   <SUIComment.Group>
     { comments.length > 0
       && comments.map(comment => (
@@ -13,7 +13,7 @@ const CommentList = ({ comments = [] }) => (
       ))
     }
   </SUIComment.Group>
-);
+));
 
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(

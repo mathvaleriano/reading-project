@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Modal, Feed } from 'semantic-ui-react';
@@ -9,7 +9,7 @@ import {
   setCurrentPost,
 } from '../../store/posts/actions';
 
-const PostModal = ({ currentPost, onClose }) => (
+const PostModal = memo(({ currentPost, onClose }) => (
   <Modal
     closeIcon
     onClose={() => onClose()}
@@ -28,7 +28,7 @@ const PostModal = ({ currentPost, onClose }) => (
         )
       }
   </Modal>
-);
+));
 
 PostModal.propTypes = {
   currentPost: PropTypes.shape({

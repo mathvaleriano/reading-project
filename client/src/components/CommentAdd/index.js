@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Form as SUIForm } from 'semantic-ui-react';
 import Form from '../Form';
 import { handleAddComment } from '../../store/comments/actions';
 
-const CommentAdd = ({ onSubmit, postId }) => (
+const CommentAdd = memo(({ onSubmit, postId }) => (
   <Form onSubmit={onSubmit}>
     <input
       name="parentId"
@@ -19,7 +19,7 @@ const CommentAdd = ({ onSubmit, postId }) => (
       required
     />
   </Form>
-);
+));
 
 CommentAdd.propTypes = {
   onSubmit: PropTypes.func.isRequired,

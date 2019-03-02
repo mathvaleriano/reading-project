@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { Form as SUIForm, Icon } from 'semantic-ui-react';
 
-const Form = ({ children, onSubmit }) => {
+const Form = memo(({ children, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -38,7 +38,7 @@ const Form = ({ children, onSubmit }) => {
       </SUIForm.Button>
     </SUIForm>
   );
-};
+});
 
 Form.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element).isRequired,
