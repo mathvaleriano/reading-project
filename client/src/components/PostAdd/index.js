@@ -11,22 +11,29 @@ const PostAdd = memo(({ onSubmit, categoryList }) => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <SUIForm.Group>
+      <SUIForm.Group widths="equal">
         <SUIForm.Input
           required
           fluid
           placeholder="What's happening?"
           name="title"
-          width={12}
         />
+
         <SUIForm.Select
+          as="select"
+          fluid
           required
-          options={categoryOptions}
           name="category"
           placeholder="Category"
-          width={4}
-        />
+        >
+          {
+            categoryOptions.map(({ value, text }) => (
+              <option value={value}>{text}</option>
+            ))
+          }
+        </SUIForm.Select>
       </SUIForm.Group>
+
       <SUIForm.TextArea
         required
         placeholder="Explain..."
