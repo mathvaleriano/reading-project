@@ -15,11 +15,7 @@ export const setCurrentCategory = currentCategory => ({
 });
 
 export const getCategories = () => async (dispatch) => {
-  try {
-    const { categories } = await categoriesApi.getCategories();
-    dispatch(setCategories(categories));
-    dispatch(setCurrentCategory(categories[0].path));
-  } catch (e) {
-    throw e;
-  }
+  const { categories } = await categoriesApi.getCategories();
+  dispatch(setCategories(categories));
+  dispatch(setCurrentCategory(categories[0].path));
 };

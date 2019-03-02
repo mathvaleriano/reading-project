@@ -28,7 +28,9 @@ const PostAdd = memo(({ onSubmit, categoryList }) => {
         >
           {
             categoryOptions.map(({ value, text }) => (
-              <option value={value}>{text}</option>
+              <option value={value} key={value}>
+                {text}
+              </option>
             ))
           }
         </SUIForm.Select>
