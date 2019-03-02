@@ -6,7 +6,7 @@ import Comment from '../Comment';
 
 const CommentList = memo(({ comments = [] }) => (
   <SUIComment.Group>
-    { comments.length
+    { comments.length > 0
       && comments.map(comment => (
         !comment.deleted
         && <Comment comment={comment} key={comment.id} />
