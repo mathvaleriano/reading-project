@@ -79,6 +79,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: state.posts.map(updatePost(payload)),
+        currentPost: updatePost(payload)(state.currentPost),
       };
     case UP_VOTE_POST:
       return {
