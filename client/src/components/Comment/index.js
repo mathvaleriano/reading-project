@@ -64,7 +64,7 @@ Comment.propTypes = {
   onClickDownVote: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
-  parentId: PropTypes.number.isRequired,
+  parentId: PropTypes.string.isRequired,
   timestamp: PropTypes.number.isRequired,
   voteScore: PropTypes.number,
 };
