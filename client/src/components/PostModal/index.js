@@ -20,7 +20,7 @@ const PostModal = memo(({ currentPost, onClose }) => (
         && (
         <Modal.Content>
           <Feed>
-            <Post {...currentPost} />
+            <Post post={currentPost} />
           </Feed>
           <CommentAdd postId={currentPost.id} />
           <CommentList />

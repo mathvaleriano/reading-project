@@ -44,7 +44,7 @@ const PostList = memo(({
           ? postList.map(post => (
             !post.deleted && (
               <Post
-                {...post}
+                post={post}
                 key={post.id}
                 onClickComments={() => onClickComments(post)}
               />
