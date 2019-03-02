@@ -1,18 +1,20 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Container } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import store from '../../store';
+import PaddedContainer from './PaddedContainer';
 import PostAdd from '../PostAdd';
 import PostList from '../PostList';
 import PostModal from '../PostModal';
 
 const App = () => (
   <Provider store={store}>
-    <Container textAlign="center">
+    <PaddedContainer textAlign="center">
+      <Header size="huge">Readable Project</Header>
       <PostAdd />
       <PostList />
       <PostModal />
-    </Container>
+    </PaddedContainer>
   </Provider>
 );
 
