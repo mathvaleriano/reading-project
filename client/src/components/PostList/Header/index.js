@@ -1,30 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, Dropdown, Icon } from 'semantic-ui-react';
 import {
-  getCategories as getCategoriesAction,
   setCurrentCategory,
 } from '../../../store/categories/actions';
+import { setCurrentOrder } from '../../../store/order/actions';
+import useCategories from '../../../hooks/useCategories';
 
-const orders = [
-  { key: 'timestamp', value: 'timestamp', text: 'Timestamp' },
-  { key: 'commentCount', value: 'commentCount', text: 'With more comments' },
-];
-
-const Header = ({
-  categories = [],
+const Header = memo(({
+  categoryList = [],
   currentCategory,
-  getCategories,
+  currentOrder,
   onChangeCategory,
+  onChangeOrder,
+  orderList,
 }) => {
-  useEffect(() => {
-    getCategories();
-  }, []);
-
-  const categoryOptions = categories.map(
-    ({ name, path }) => ({ key: path, text: name, value: path }),
-  );
+  const categoryOptions = useCategories(categoryList);
 
   return (
     <Container textAlign="right">
@@ -42,35 +34,41 @@ const Header = ({
       {' '}
       <Dropdown
         inline
-        options={orders}
-        defaultValue={orders[0].value}
+        options={orderList}
+        defaultValue={currentOrder}
+        onChange={(e, { value }) => onChangeOrder(value)}
       />
     </Container>
   );
-};
+});
 
 Header.propTypes = {
-  categories: PropTypes.array,
+  categoryList: PropTypes.array,
   currentCategory: PropTypes.string,
-  getCategories: PropTypes.func.isRequired,
+  currentOrder: PropTypes.string.isRequired,
   onChangeCategory: PropTypes.func.isRequired,
+  onChangeOrder: PropTypes.func.isRequired,
+  orderList: PropTypes.array.isRequired,
 };
 
 Header.defaultProps = {
-  categories: [],
+  categoryList: [],
   currentCategory: '',
 };
 
 const mapStateToProps = ({
-  categories: { list, currentCategory },
+  categories: { list: categoryList, currentCategory },
+  order: { currentOrder, list: orderList },
 }) => ({
-  categories: list,
+  categoryList,
   currentCategory,
+  currentOrder,
+  orderList,
 });
 
 const mapDispatchToProps = {
-  getCategories: getCategoriesAction,
   onChangeCategory: setCurrentCategory,
+  onChangeOrder: setCurrentOrder,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
