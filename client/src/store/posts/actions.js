@@ -10,6 +10,7 @@ import {
   SET_CURRENT_POST,
   DOWN_VOTE_POST,
   UP_VOTE_POST,
+  MANIPULATE_QTY_COMMENTS,
 } from './types';
 import { getComments, setComments } from '../comments/actions';
 
@@ -152,3 +153,8 @@ export const handleDownVote = id => async (dispatch) => {
     dispatch(upVote(id));
   }
 };
+
+export const manipulateQtyComments = ({ id, value }) => ({
+  type: MANIPULATE_QTY_COMMENTS,
+  payload: { id, value },
+});

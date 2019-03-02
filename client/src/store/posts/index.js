@@ -10,6 +10,7 @@ import {
   SET_CURRENT_POST,
   UP_VOTE_POST,
   DOWN_VOTE_POST,
+  MANIPULATE_QTY_COMMENTS,
 } from './types';
 
 const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
@@ -33,6 +34,21 @@ const toggleVote = ({ postId, voteScoreModifier }) => post => (
 
 const upVote = postId => toggleVote({ postId, voteScoreModifier: 1 });
 const downVote = postId => toggleVote({ postId, voteScoreModifier: -1 });
+
+const manipulateQtyComments = ({ id, value = 1 }) => post => (
+  post.id === id
+    ? { ...post, commentCount: post.commentCount + value }
+    : post
+);
+
+const manipulateQtyCommentsCurrentPost = ({
+  state: { currentPost },
+  value,
+}) => (
+  currentPost
+    ? { ...currentPost, commentCount: currentPost.commentCount + value }
+    : currentPost
+);
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -73,6 +89,15 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: state.posts.map(downVote(payload.id)),
+      };
+    case MANIPULATE_QTY_COMMENTS:
+      return {
+        ...state,
+        posts: state.posts.map(manipulateQtyComments(payload)),
+        currentPost: manipulateQtyCommentsCurrentPost({
+          state,
+          value: payload.value,
+        }),
       };
     default:
       return state;

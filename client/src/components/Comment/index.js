@@ -15,6 +15,7 @@ const Comment = memo(({
   onClickDownVote,
   onClickUpVote,
   onClickRemove,
+  parentId,
   timestamp,
   voteScore = 0,
 }) => (
@@ -45,7 +46,7 @@ const Comment = memo(({
 
         { author === 'You'
           && (
-            <SUIComment.Action onClick={() => onClickRemove(id)}>
+            <SUIComment.Action onClick={() => onClickRemove({ id, parentId })}>
               <Icon name="trash" />
               Remove
             </SUIComment.Action>
@@ -63,6 +64,7 @@ Comment.propTypes = {
   onClickDownVote: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
+  parentId: PropTypes.number.isRequired,
   timestamp: PropTypes.number.isRequired,
   voteScore: PropTypes.number,
 };

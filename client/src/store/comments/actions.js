@@ -10,6 +10,7 @@ import {
   UP_VOTE_COMMENT,
   DOWN_VOTE_COMMENT,
 } from './types';
+import { manipulateQtyComments } from '../posts/actions';
 
 const setErrors = (errors = []) => ({
   type: SET_ERRORS,
@@ -66,16 +67,21 @@ export const handleAddComment = comment => async (dispatch) => {
   try {
     dispatch(addComment(comment));
     await commentsApi.addComment(comment);
+
+    const { parentId } = comment;
+    dispatch(manipulateQtyComments({ id: parentId, value: 1 }));
   } catch (e) {
     dispatch(removeComment(comment.id));
     throw e;
   }
 };
 
-export const handleRemoveComment = id => async (dispatch) => {
+export const handleRemoveComment = ({ id, parentId }) => async (dispatch) => {
   try {
     dispatch(removeComment(id));
     await commentsApi.removeComment(id);
+
+    dispatch(manipulateQtyComments({ id: parentId, value: -1 }));
   } catch (e) {
     dispatch(undoRemoveComment(id));
     throw e;
