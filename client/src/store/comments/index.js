@@ -14,13 +14,11 @@ import {
 const toggleDeletedComment = isRemoving => ({
   comments = [],
   id,
-}) => comments.map(
-  comment => (
-    comment.id === id
-      ? { ...comment, deleted: isRemoving }
-      : comment
-  ),
-);
+}) => comments.map(comment => (
+  comment.id === id
+    ? { ...comment, deleted: isRemoving }
+    : comment
+));
 
 const removeComment = toggleDeletedComment(true);
 const undoRemoveComment = toggleDeletedComment(false);
@@ -28,12 +26,11 @@ const undoRemoveComment = toggleDeletedComment(false);
 const updateComment = ({
   comments = [],
   newValues,
-}) => comments.map(
-  comment => (comment.id === newValues.id
+}) => comments.map(comment => (
+  comment.id === newValues.id
     ? { ...comment, ...newValues }
     : comment
-  ),
-);
+));
 
 const toggleVote = ({ commentId, voteScoreModifier }) => comment => (
   comment.id === commentId

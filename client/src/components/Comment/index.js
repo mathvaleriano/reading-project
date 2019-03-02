@@ -1,82 +1,132 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Comment as SUIComment, Icon } from 'semantic-ui-react';
+import {
+  Comment as SUIComment,
+  Icon,
+  TextArea,
+} from 'semantic-ui-react';
 import {
   handleUpVote,
   handleDownVote,
   handleRemoveComment,
+  handleUpdateComment,
 } from '../../store/comments/actions';
+import MetaSubmit from '../MetaSubmit';
+import Form from '../Form';
 
 const Comment = memo(({
-  author,
-  body,
-  id,
+  comment,
   onClickDownVote,
   onClickUpVote,
   onClickRemove,
-  parentId,
-  timestamp,
-  voteScore = 0,
-}) => (
-  <SUIComment key={id}>
-    <SUIComment.Content>
-      <SUIComment.Author as="a">{author}</SUIComment.Author>
+  onUpdateComment,
+}) => {
+  const {
+    author,
+    body,
+    id,
+    parentId,
+    timestamp,
+    voteScore = 0,
+  } = comment;
+  const isOwner = author === 'You';
 
-      <SUIComment.Metadata>
-        <div>{new Date(timestamp).toLocaleString()}</div>
-      </SUIComment.Metadata>
+  const [isEditing, setIsEditing] = useState(false);
 
-      <SUIComment.Text>{body}</SUIComment.Text>
+  const toggleIsEditing = () => setIsEditing(!isEditing);
 
-      <SUIComment.Actions>
-        <SUIComment.Action onClick={() => onClickUpVote(id)}>
-          <Icon name="thumbs up outline" />
-        </SUIComment.Action>
+  const handleSubmit = (data) => {
+    toggleIsEditing();
+    return onUpdateComment({ ...data, comment });
+  };
 
-        <SUIComment.Action onClick={() => onClickDownVote(id)}>
-          <Icon name="thumbs down outline" />
-        </SUIComment.Action>
+  return (
+    <SUIComment key={id}>
+      <Form onSubmit={handleSubmit} hasCustomSubmit>
+        <SUIComment.Content>
+          <SUIComment.Author as="a">{author}</SUIComment.Author>
 
-        <SUIComment.Action>
-          Vote Score:
-          {' '}
-          {voteScore}
-        </SUIComment.Action>
+          <SUIComment.Metadata>
+            <div>{new Date(timestamp).toLocaleString()}</div>
+          </SUIComment.Metadata>
 
-        { author === 'You'
-          && (
-            <SUIComment.Action onClick={() => onClickRemove({ id, parentId })}>
-              <Icon name="trash" />
-              Remove
+          <SUIComment.Text>
+            { isEditing
+              ? (
+                <TextArea
+                  name="body"
+                  placeholder="Type a new comment..."
+                  defaultValue={body}
+                />
+              )
+              : body
+          }
+          </SUIComment.Text>
+
+          <SUIComment.Actions>
+            <SUIComment.Action onClick={() => onClickUpVote(id)}>
+              <Icon name="thumbs up outline" />
             </SUIComment.Action>
-          )
-        }
-      </SUIComment.Actions>
-    </SUIComment.Content>
-  </SUIComment>
-));
+
+            <SUIComment.Action onClick={() => onClickDownVote(id)}>
+              <Icon name="thumbs down outline" />
+            </SUIComment.Action>
+
+            <SUIComment.Action>
+            Vote Score:
+              {' '}
+              {voteScore}
+            </SUIComment.Action>
+
+            { isOwner
+            && (
+              <>
+                {isEditing
+                  && (
+                    <MetaSubmit type="submit">
+                      Save
+                    </MetaSubmit>
+                  )
+                }
+
+                <SUIComment.Action onClick={toggleIsEditing}>
+                  { isEditing ? 'Cancel' : 'Edit' }
+                </SUIComment.Action>
+
+                <SUIComment.Action onClick={() => onClickRemove({ id, parentId })}>
+                  Remove
+                </SUIComment.Action>
+              </>
+            )
+          }
+          </SUIComment.Actions>
+        </SUIComment.Content>
+      </Form>
+    </SUIComment>
+  );
+});
 
 Comment.propTypes = {
-  id: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+  comment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    parentId: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
+    voteScore: PropTypes.number,
+  }).isRequired,
   onClickDownVote: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
-  parentId: PropTypes.string.isRequired,
-  timestamp: PropTypes.number.isRequired,
-  voteScore: PropTypes.number,
-};
-
-Comment.defaultProps = {
-  voteScore: 0,
+  onUpdateComment: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
   onClickDownVote: handleDownVote,
   onClickUpVote: handleUpVote,
   onClickRemove: handleRemoveComment,
+  onUpdateComment: handleUpdateComment,
 };
 
 export default connect(

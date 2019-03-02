@@ -100,8 +100,8 @@ export const handleUpdateComment = ({
 }) => async (dispatch) => {
   try {
     const { id } = comment;
-    dispatch(updateComment({ body, timestamp }));
-    await commentsApi.updateComment({ id, body, timestamp });
+    dispatch(updateComment({ body, id, timestamp }));
+    await commentsApi.updateComment({ body, id, timestamp });
   } catch (e) {
     dispatch(updateComment(comment));
     throw e;
