@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { Form as SUIForm, Icon } from 'semantic-ui-react';
 
-const Form = memo(({ children, onSubmit }) => {
+const Form = memo(({ children, onSubmit, hasCustomSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -28,24 +28,30 @@ const Form = memo(({ children, onSubmit }) => {
   return (
     <SUIForm onSubmit={handleSubmit}>
       {children}
-      <SUIForm.Button
-        primary
-        icon
-        labelPosition="right"
-      >
-          Send
-        <Icon name="send" />
-      </SUIForm.Button>
+      {!hasCustomSubmit
+        && (
+        <SUIForm.Button
+          primary
+          icon
+          labelPosition="right"
+        >
+            Send
+          <Icon name="send" />
+        </SUIForm.Button>
+        )
+      }
     </SUIForm>
   );
 });
 
 Form.propTypes = {
   children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  hasCustomSubmit: PropTypes.bool,
   onSubmit: PropTypes.func,
 };
 
 Form.defaultProps = {
+  hasCustomSubmit: false,
   onSubmit: () => {},
 };
 
