@@ -13,6 +13,7 @@ import {
 import {
   getCategories as getCategoriesAction,
 } from '../../store/categories/actions';
+import { postType } from '../../types/post';
 
 const PostList = memo(({
   currentCategory,
@@ -30,7 +31,7 @@ const PostList = memo(({
   }, []);
 
   useEffect(() => {
-    const orderedList = orderBy(posts, currentOrder);
+    const orderedList = orderBy(posts, currentOrder, 'desc');
     const filteredList = filter(orderedList, { category: currentCategory });
 
     setPosts(filteredList);
@@ -64,14 +65,7 @@ PostList.propTypes = {
   getPosts: PropTypes.func.isRequired,
   onClickComments: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
-    PropTypes.shape({
-      author: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-      category: PropTypes.string,
-      commentCount: PropTypes.number,
-      timestamp: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-    }),
+    PropTypes.shape(postType),
   ),
 };
 

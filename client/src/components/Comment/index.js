@@ -14,6 +14,7 @@ import {
 } from '../../store/comments/actions';
 import MetaSubmit from '../MetaSubmit';
 import Form from '../Form';
+import { commentType } from '../../types/comment';
 
 const Comment = memo(({
   comment,
@@ -108,14 +109,7 @@ const Comment = memo(({
 });
 
 Comment.propTypes = {
-  comment: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
-    parentId: PropTypes.string.isRequired,
-    timestamp: PropTypes.number.isRequired,
-    voteScore: PropTypes.number,
-  }).isRequired,
+  comment: PropTypes.shape(commentType).isRequired,
   onClickDownVote: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,

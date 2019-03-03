@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Comment as SUIComment } from 'semantic-ui-react';
 import Comment from '../Comment';
+import { commentType } from '../../types/comment';
 
 const CommentList = memo(({ comments = [] }) => (
   <SUIComment.Group>
@@ -17,13 +18,7 @@ const CommentList = memo(({ comments = [] }) => (
 
 CommentList.propTypes = {
   comments: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      body: PropTypes.string.isRequired,
-      timestamp: PropTypes.number.isRequired,
-      voteScore: PropTypes.number,
-    }),
+    PropTypes.shape(commentType),
   ),
 };
 

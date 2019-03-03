@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Feed, Input } from 'semantic-ui-react';
+import { postSummaryType } from '../../../types/post';
 
 const Summary = memo(({
   author,
@@ -31,10 +32,8 @@ const Summary = memo(({
 ));
 
 Summary.propTypes = {
-  author: PropTypes.string.isRequired,
+  ...postSummaryType,
   isEditing: PropTypes.bool.isRequired,
-  timestamp: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
 };
 
 export default Summary;

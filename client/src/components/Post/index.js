@@ -8,6 +8,7 @@ import Form from '../Form';
 import {
   handleUpdatePost,
 } from '../../store/posts/actions';
+import { postType } from '../../types/post';
 
 const Post = memo(({
   onClickComments,
@@ -61,14 +62,7 @@ const Post = memo(({
 Post.propTypes = {
   onClickComments: PropTypes.func,
   onUpdatePost: PropTypes.func.isRequired,
-  post: PropTypes.shape({
-    author: PropTypes.string.isRequired,
-    body: PropTypes.string.isRequired,
-    category: PropTypes.string,
-    commentCount: PropTypes.number,
-    timestamp: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-  }).isRequired,
+  post: PropTypes.shape(postType).isRequired,
 };
 
 Post.defaultProps = {

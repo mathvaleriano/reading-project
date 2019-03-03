@@ -7,6 +7,7 @@ import {
 } from '../../../store/categories/actions';
 import { setCurrentOrder } from '../../../store/order/actions';
 import useCategories from '../../../hooks/useCategories';
+import { dropdownType } from '../../../types/dropdown';
 
 const Header = memo(({
   categoryList = [],
@@ -21,7 +22,7 @@ const Header = memo(({
   return (
     <Container textAlign="right">
       <Icon name="filter" />
-        Order by
+        Filter by
       {' '}
       <Dropdown
         inline
@@ -29,6 +30,7 @@ const Header = memo(({
         options={categoryOptions}
         onChange={(e, { value }) => onChangeCategory(value)}
       />
+      {' '}
       <Icon name="unordered list" />
         Order by
       {' '}
@@ -43,17 +45,18 @@ const Header = memo(({
 });
 
 Header.propTypes = {
-  categoryList: PropTypes.array,
+  categoryList: PropTypes.arrayOf(PropTypes.object),
   currentCategory: PropTypes.string,
   currentOrder: PropTypes.string.isRequired,
   onChangeCategory: PropTypes.func.isRequired,
   onChangeOrder: PropTypes.func.isRequired,
-  orderList: PropTypes.array.isRequired,
+  orderList: dropdownType,
 };
 
 Header.defaultProps = {
   categoryList: [],
   currentCategory: '',
+  orderList: [],
 };
 
 const mapStateToProps = ({

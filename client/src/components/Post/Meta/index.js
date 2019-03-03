@@ -8,6 +8,7 @@ import {
   handleDownVote,
 } from '../../../store/posts/actions';
 import MetaSubmit from '../../MetaSubmit';
+import { postMetaType, postMetaTypeDefaultValues } from '../../../types/post';
 
 const Meta = memo(({
   author,
@@ -81,9 +82,8 @@ const Meta = memo(({
 });
 
 Meta.propTypes = {
+  ...postMetaType,
   author: PropTypes.string.isRequired,
-  category: PropTypes.string,
-  commentCount: PropTypes.number,
   id: PropTypes.string.isRequired,
   isEditing: PropTypes.bool.isRequired,
   onClickComments: PropTypes.func,
@@ -91,14 +91,11 @@ Meta.propTypes = {
   onClickRemove: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   toggleIsEditing: PropTypes.func.isRequired,
-  voteScore: PropTypes.number,
 };
 
 Meta.defaultProps = {
-  category: '',
-  commentCount: 0,
+  ...postMetaTypeDefaultValues,
   onClickComments: () => {},
-  voteScore: 0,
 };
 
 const mapDispatchToProps = {

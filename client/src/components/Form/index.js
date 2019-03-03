@@ -45,7 +45,10 @@ const Form = memo(({ children, onSubmit, hasCustomSubmit }) => {
 });
 
 Form.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element,
+  ]).isRequired,
   hasCustomSubmit: PropTypes.bool,
   onSubmit: PropTypes.func,
 };

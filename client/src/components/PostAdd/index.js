@@ -14,15 +14,13 @@ const PostAdd = memo(({ onSubmit, categoryList }) => {
       <SUIForm.Group widths="equal">
         <SUIForm.Input
           required
-          fluid
           placeholder="What's happening?"
           name="title"
         />
 
-        <SUIForm.Select
-          as="select"
-          fluid
+        <SUIForm.Field
           required
+          control="select"
           name="category"
           placeholder="Category"
         >
@@ -33,7 +31,7 @@ const PostAdd = memo(({ onSubmit, categoryList }) => {
               </option>
             ))
           }
-        </SUIForm.Select>
+        </SUIForm.Field>
       </SUIForm.Group>
 
       <SUIForm.TextArea
@@ -46,7 +44,7 @@ const PostAdd = memo(({ onSubmit, categoryList }) => {
 });
 
 PostAdd.propTypes = {
-  categoryList: PropTypes.array,
+  categoryList: PropTypes.arrayOf(PropTypes.object),
   onSubmit: PropTypes.func.isRequired,
 };
 
