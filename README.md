@@ -12,4 +12,4 @@ This repository includes the code for the backend API Server that you'll use to 
 If you have docker and docker compose configured on your pc just run
 `docker-compose up` on this directory
 
-Or go to **api-server** and client **folders** and follow instructions
+Or go to **api-server** and **client** folders and follow instructions
