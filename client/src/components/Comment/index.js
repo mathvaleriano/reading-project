@@ -3,33 +3,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   Comment as SUIComment,
-  Icon,
   TextArea,
 } from 'semantic-ui-react';
 import {
-  handleUpVote,
-  handleDownVote,
-  handleRemoveComment,
   handleUpdateComment,
 } from '../../store/comments/actions';
-import MetaSubmit from '../MetaSubmit';
+import CommentSummary from './Summary';
+import CommentActions from './Actions';
 import Form from '../Form';
 import { commentType } from '../../types/comment';
 
 const Comment = memo(({
   comment,
-  onClickDownVote,
-  onClickUpVote,
-  onClickRemove,
   onUpdateComment,
 }) => {
   const {
     author,
     body,
     id,
-    parentId,
     timestamp,
-    voteScore = 0,
   } = comment;
   const isOwner = author === 'You';
 
@@ -46,11 +38,10 @@ const Comment = memo(({
     <SUIComment key={id}>
       <Form onSubmit={handleSubmit} hasCustomSubmit>
         <SUIComment.Content>
-          <SUIComment.Author as="a">{author}</SUIComment.Author>
-
-          <SUIComment.Metadata>
-            <div>{new Date(timestamp).toLocaleString()}</div>
-          </SUIComment.Metadata>
+          <CommentSummary
+            author={author}
+            timestamp={timestamp}
+          />
 
           <SUIComment.Text>
             { isEditing
@@ -65,43 +56,12 @@ const Comment = memo(({
           }
           </SUIComment.Text>
 
-          <SUIComment.Actions>
-            <SUIComment.Action onClick={() => onClickUpVote(id)}>
-              <Icon name="thumbs up outline" />
-            </SUIComment.Action>
-
-            <SUIComment.Action onClick={() => onClickDownVote(id)}>
-              <Icon name="thumbs down outline" />
-            </SUIComment.Action>
-
-            <SUIComment.Action>
-            Vote Score:
-              {' '}
-              {voteScore}
-            </SUIComment.Action>
-
-            { isOwner
-            && (
-              <>
-                {isEditing
-                  && (
-                    <MetaSubmit type="submit">
-                      Save
-                    </MetaSubmit>
-                  )
-                }
-
-                <SUIComment.Action onClick={toggleIsEditing}>
-                  { isEditing ? 'Cancel' : 'Edit' }
-                </SUIComment.Action>
-
-                <SUIComment.Action onClick={() => onClickRemove({ id, parentId })}>
-                  Remove
-                </SUIComment.Action>
-              </>
-            )
-          }
-          </SUIComment.Actions>
+          <CommentActions
+            {...comment}
+            isOwner={isOwner}
+            isEditing={isEditing}
+            onToggleIsEditing={toggleIsEditing}
+          />
         </SUIComment.Content>
       </Form>
     </SUIComment>
@@ -110,16 +70,10 @@ const Comment = memo(({
 
 Comment.propTypes = {
   comment: PropTypes.shape(commentType).isRequired,
-  onClickDownVote: PropTypes.func.isRequired,
-  onClickUpVote: PropTypes.func.isRequired,
-  onClickRemove: PropTypes.func.isRequired,
   onUpdateComment: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  onClickDownVote: handleDownVote,
-  onClickUpVote: handleUpVote,
-  onClickRemove: handleRemoveComment,
   onUpdateComment: handleUpdateComment,
 };
 
