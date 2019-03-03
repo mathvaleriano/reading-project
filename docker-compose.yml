@@ -1,0 +1,27 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./api-server/
+    command: npm start
+    volumes:
+      - ./api-server/:/usr/app
+      - /usr/app/node_modules
+    ports:
+      - "3001:3001"
+    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
+    environment:
+      - NODE_ENV=development
+  client:
+    build:
+      context: ./client/
+    environment:
+      - PORT=8080
+    command: npm start
+    volumes:
+      - ./client/:/usr/app
+      - /usr/app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "8080:8080"
