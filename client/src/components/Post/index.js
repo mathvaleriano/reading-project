@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Feed, TextArea } from 'semantic-ui-react';
@@ -9,16 +9,17 @@ import {
   handleUpdatePost,
 } from '../../store/posts/actions';
 import { postType } from '../../types/post';
+import useIsEditing from '../../hooks/useIsEditing';
 
 const Post = memo(({
   onClickComments,
   onUpdatePost,
   post,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const { isEditing, toggleIsEditing } = useIsEditing();
 
   const handleSubmit = ({ body, title }) => {
-    setIsEditing(false);
+    toggleIsEditing();
     return onUpdatePost({ body, post, title });
   };
 
@@ -50,7 +51,7 @@ const Post = memo(({
           <Meta
             isEditing={isEditing}
             onClickComments={onClickComments}
-            toggleIsEditing={() => setIsEditing(!isEditing)}
+            toggleIsEditing={toggleIsEditing}
             {...post}
           />
         </Form>

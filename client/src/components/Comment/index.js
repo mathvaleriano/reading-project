@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -12,6 +12,7 @@ import CommentSummary from './Summary';
 import CommentActions from './Actions';
 import Form from '../Form';
 import { commentType } from '../../types/comment';
+import useIsEditing from '../../hooks/useIsEditing';
 
 const Comment = memo(({
   comment,
@@ -24,10 +25,7 @@ const Comment = memo(({
     timestamp,
   } = comment;
   const isOwner = author === 'You';
-
-  const [isEditing, setIsEditing] = useState(false);
-
-  const toggleIsEditing = () => setIsEditing(!isEditing);
+  const { isEditing, toggleIsEditing } = useIsEditing();
 
   const handleSubmit = (data) => {
     toggleIsEditing();
