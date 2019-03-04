@@ -6,7 +6,7 @@ import Comment from '../Comment';
 import { commentType } from '../../types/comment';
 
 const CommentList = memo(({ comments = [] }) => (
-  <SUIComment.Group>
+  <SUIComment.Group style={{ textAlign: 'left' }}>
     { comments.length > 0
       && comments.map(comment => (
         !comment.deleted
