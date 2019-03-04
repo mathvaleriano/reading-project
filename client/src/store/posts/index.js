@@ -11,6 +11,7 @@ import {
   UP_VOTE_POST,
   DOWN_VOTE_POST,
   MANIPULATE_QTY_COMMENTS,
+  SET_CURRENT_POST_BY_ID,
 } from './types';
 
 const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
@@ -49,6 +50,15 @@ const handleUpdateQtyComments = ({ id, value = 1 }) => post => (
     : post
 );
 
+const getCurrentPost = ({ postId, posts }) => {
+  if (!postId) {
+    return { currentPost: undefined, errors: [] };
+  }
+
+  const currentPost = posts.find(post => post.id === postId && !post.deleted);
+  return currentPost ? { currentPost } : { errors: ['Post not found'] };
+};
+
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_ERRORS:
@@ -56,6 +66,11 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_POSTS:
     case SET_CURRENT_POST:
       return { ...state, ...payload };
+    case SET_CURRENT_POST_BY_ID:
+      return {
+        ...state,
+        ...getCurrentPost({ posts: state.posts, postId: payload }),
+      };
     case ADD_POST:
       return {
         ...state,

@@ -11,10 +11,11 @@ import {
   DOWN_VOTE_POST,
   UP_VOTE_POST,
   MANIPULATE_QTY_COMMENTS,
+  SET_CURRENT_POST_BY_ID,
 } from './types';
 import { getComments, setComments } from '../comments/actions';
 
-const setErrors = (errors = []) => ({
+export const setErrors = (errors = []) => ({
   type: SET_ERRORS,
   payload: { errors },
 });
@@ -116,11 +117,20 @@ export const setCurrentPost = currentPost => ({
   payload: { currentPost },
 });
 
-export const handleSetCurrentPost = currentPost => (dispatch) => {
-  dispatch(setCurrentPost(currentPost));
+export const setCurrentPostById = postId => ({
+  type: SET_CURRENT_POST_BY_ID,
+  payload: postId,
+});
 
-  if (currentPost.id) {
-    dispatch(getComments(currentPost.id));
+export const handleSetCurrentPost = currentPost => (dispatch) => {
+  const hasFullInfos = typeof currentPost === 'object';
+  const id = hasFullInfos ? currentPost.id : currentPost;
+  const fnSetCurrentPost = hasFullInfos ? setCurrentPost : setCurrentPostById;
+
+  dispatch(fnSetCurrentPost(currentPost));
+  
+  if (id) {
+    dispatch(getComments(id));
   } else {
     dispatch(setComments());
   }
