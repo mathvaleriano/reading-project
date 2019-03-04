@@ -13,7 +13,7 @@ const PostModal = memo(({ currentPost, onClose }) => (
   <Modal
     closeIcon
     onClose={() => onClose()}
-    open={!!currentPost}
+    open={currentPost && !currentPost.deleted}
     size="tiny"
   >
     { currentPost

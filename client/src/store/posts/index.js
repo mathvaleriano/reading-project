@@ -68,6 +68,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: removePost({ posts: state.posts, id: payload }),
+        currentPost: state.currentPost && { ...state.currentPost, deleted: true },
       };
     case UNDO_REMOVE_POST:
       return {
