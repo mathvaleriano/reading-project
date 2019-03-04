@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Feed, Icon } from 'semantic-ui-react';
 import {
   handleRemovePost,
@@ -16,7 +17,6 @@ const Meta = memo(({
   commentCount,
   id,
   isEditing,
-  onClickComments,
   onClickDownVote,
   onClickRemove,
   onClickUpVote,
@@ -64,10 +64,10 @@ const Meta = memo(({
       {' '}
       { voteScore }
 
-      <Feed.Like onClick={onClickComments}>
+      <Link to={`/${category}/${id}`}>
         <Icon name="comments outline" />
-        {commentCount > 0 && commentCount}
-      </Feed.Like>
+        {commentCount}
+      </Link>
 
       {getOwnerActions()}
 
@@ -86,7 +86,6 @@ Meta.propTypes = {
   author: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   isEditing: PropTypes.bool.isRequired,
-  onClickComments: PropTypes.func,
   onClickDownVote: PropTypes.func.isRequired,
   onClickRemove: PropTypes.func.isRequired,
   onClickUpVote: PropTypes.func.isRequired,

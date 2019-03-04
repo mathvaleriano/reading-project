@@ -1,39 +1,52 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Feed, Input } from 'semantic-ui-react';
-import { postSummaryType } from '../../../types/post';
+import { postType } from '../../../types/post';
 
 const Summary = memo(({
-  author,
+  post,
   isEditing,
-  timestamp,
-  title,
-}) => (
-  <Feed.Summary>
-    {isEditing
-      ? (
-        <Input
-          required
-          name="title"
-          placeholder="Type a new Title"
-          defaultValue={title}
-        />
-      )
-      : (
-        <>
-          <Feed.User>{author}</Feed.User>
-          {' '}
-          {title}
-          {' '}
-          <Feed.Date>{new Date(timestamp).toLocaleString()}</Feed.Date>
-        </>
-      )
-    }
-  </Feed.Summary>
-));
+}) => {
+  const {
+    author, id, category, timestamp, title,
+  } = post;
+
+  return (
+    <Feed.Summary>
+      {isEditing
+        ? (
+          <Input
+            required
+            name="title"
+            placeholder="Type a new Title"
+            defaultValue={title}
+          />
+        )
+        : (
+          <>
+            <Feed.User
+              style={{ color: '#000' }}
+            >
+              {author}
+            </Feed.User>
+
+            {' '}
+            <Link to={`/${category}/${id}`}>
+              {title}
+            </Link>
+            {' '}
+
+            <Feed.Date>{new Date(timestamp).toLocaleString()}</Feed.Date>
+          </>
+        )
+      }
+    </Feed.Summary>
+  );
+});
 
 Summary.propTypes = {
-  ...postSummaryType,
+  post: PropTypes.shape(postType).isRequired,
   isEditing: PropTypes.bool.isRequired,
 };
 

@@ -32,7 +32,7 @@ const Post = memo(({
         >
           <Summary
             isEditing={isEditing}
-            {...post}
+            post={post}
           />
 
           <Feed.Extra text>
