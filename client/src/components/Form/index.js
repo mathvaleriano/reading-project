@@ -11,7 +11,7 @@ const Form = memo(({ children, onSubmit, hasCustomSubmit }) => {
     const { target } = e;
     const now = new Date();
     const {
-      id = now.toISOString(),
+      id = now.getTime().toString(),
       ...data
     } = serialize(target, { hash: true });
     const post = {
