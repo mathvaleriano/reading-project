@@ -39,6 +39,7 @@ const Post = memo(({
             { isEditing
               ? (
                 <TextArea
+                  required
                   name="body"
                   placeholder="Type a new description..."
                   defaultValue={post.body}

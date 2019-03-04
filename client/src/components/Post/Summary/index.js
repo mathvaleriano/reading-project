@@ -13,6 +13,7 @@ const Summary = memo(({
     {isEditing
       ? (
         <Input
+          required
           name="title"
           placeholder="Type a new Title"
           defaultValue={title}

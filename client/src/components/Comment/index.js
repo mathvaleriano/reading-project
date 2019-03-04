@@ -45,6 +45,7 @@ const Comment = memo(({
             { isEditing
               ? (
                 <TextArea
+                  required
                   name="body"
                   placeholder="Type a new comment..."
                   defaultValue={body}
