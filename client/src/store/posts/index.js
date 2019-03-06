@@ -11,6 +11,7 @@ import {
   UP_VOTE_POST,
   DOWN_VOTE_POST,
   MANIPULATE_QTY_COMMENTS,
+  SET_CURRENT_POST_BY_ID,
 } from './types';
 
 const toggleDeletedPost = isRemoving => ({ posts = [], id }) => posts.map(
@@ -26,29 +27,37 @@ const updatePost = propsToUpdate => post => (
     : post
 );
 
+const updateVoteScore = ({ post, voteScoreModifier }) => ({
+  ...post, voteScore: post.voteScore + voteScoreModifier,
+});
+
 const toggleVote = ({ postId, voteScoreModifier }) => post => (
   post.id === postId
-    ? { ...post, voteScore: post.voteScore + voteScoreModifier }
+    ? updateVoteScore({ post, voteScoreModifier })
     : post
 );
 
 const upVote = postId => toggleVote({ postId, voteScoreModifier: 1 });
 const downVote = postId => toggleVote({ postId, voteScoreModifier: -1 });
 
-const manipulateQtyComments = ({ id, value = 1 }) => post => (
+const updateQtyComments = ({ post, value }) => (
+  { ...post, commentCount: post.commentCount + value }
+);
+
+const handleUpdateQtyComments = ({ id, value = 1 }) => post => (
   post.id === id
-    ? { ...post, commentCount: post.commentCount + value }
+    ? updateQtyComments({ post, value })
     : post
 );
 
-const manipulateQtyCommentsCurrentPost = ({
-  state: { currentPost },
-  value,
-}) => (
-  currentPost
-    ? { ...currentPost, commentCount: currentPost.commentCount + value }
-    : currentPost
-);
+const getCurrentPost = ({ postId, posts }) => {
+  if (!postId) {
+    return { currentPost: undefined, errors: [] };
+  }
+
+  const currentPost = posts.find(post => post.id === postId && !post.deleted);
+  return currentPost ? { currentPost } : { errors: ['Post not found'] };
+};
 
 const reducer = (state = initialState, { type, payload }) => {
   switch (type) {
@@ -57,6 +66,11 @@ const reducer = (state = initialState, { type, payload }) => {
     case SET_POSTS:
     case SET_CURRENT_POST:
       return { ...state, ...payload };
+    case SET_CURRENT_POST_BY_ID:
+      return {
+        ...state,
+        ...getCurrentPost({ posts: state.posts, postId: payload }),
+      };
     case ADD_POST:
       return {
         ...state,
@@ -69,6 +83,7 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: removePost({ posts: state.posts, id: payload }),
+        currentPost: state.currentPost && { ...state.currentPost, deleted: true },
       };
     case UNDO_REMOVE_POST:
       return {
@@ -79,24 +94,32 @@ const reducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: state.posts.map(updatePost(payload)),
-        currentPost: updatePost(payload)(state.currentPost),
+        currentPost: state.currentPost && updatePost(payload)(state.currentPost),
       };
     case UP_VOTE_POST:
       return {
         ...state,
         posts: state.posts.map(upVote(payload.id)),
+        currentPost: state.currentPost && updateVoteScore({
+          post: state.currentPost,
+          voteScoreModifier: 1,
+        }),
       };
     case DOWN_VOTE_POST:
       return {
         ...state,
         posts: state.posts.map(downVote(payload.id)),
+        currentPost: state.currentPost && updateVoteScore({
+          post: state.currentPost,
+          voteScoreModifier: -1,
+        }),
       };
     case MANIPULATE_QTY_COMMENTS:
       return {
         ...state,
-        posts: state.posts.map(manipulateQtyComments(payload)),
-        currentPost: manipulateQtyCommentsCurrentPost({
-          state,
+        posts: state.posts.map(handleUpdateQtyComments(payload)),
+        currentPost: state.currentPost && updateQtyComments({
+          post: state.currentPost,
           value: payload.value,
         }),
       };

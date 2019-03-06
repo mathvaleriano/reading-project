@@ -32,13 +32,14 @@ const Post = memo(({
         >
           <Summary
             isEditing={isEditing}
-            {...post}
+            post={post}
           />
 
           <Feed.Extra text>
             { isEditing
               ? (
                 <TextArea
+                  required
                   name="body"
                   placeholder="Type a new description..."
                   defaultValue={post.body}

@@ -20,7 +20,7 @@ const PostList = memo(({
   currentOrder,
   getPosts,
   getCategories,
-  onClickComments,
+  onSetCurrentPost,
   posts = [],
 }) => {
   const [postList, setPosts] = useState(posts);
@@ -47,7 +47,7 @@ const PostList = memo(({
               <Post
                 post={post}
                 key={post.id}
-                onClickComments={() => onClickComments(post)}
+                onClickComments={() => onSetCurrentPost(post)}
               />
             )
           ))
@@ -63,7 +63,7 @@ PostList.propTypes = {
   currentOrder: PropTypes.string.isRequired,
   getCategories: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
-  onClickComments: PropTypes.func.isRequired,
+  onSetCurrentPost: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape(postType),
   ),
@@ -87,7 +87,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   getCategories: getCategoriesAction,
   getPosts: getPostsAction,
-  onClickComments: handleSetCurrentPost,
+  onSetCurrentPost: handleSetCurrentPost,
 };
 
 export default connect(
