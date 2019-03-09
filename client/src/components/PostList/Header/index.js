@@ -1,23 +1,26 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { Container, Dropdown, Icon } from 'semantic-ui-react';
-import {
-  setCurrentCategory,
-} from '../../../store/categories/actions';
 import { setCurrentOrder } from '../../../store/order/actions';
 import useCategories from '../../../hooks/useCategories';
 import { dropdownType } from '../../../types/dropdown';
 
 const Header = memo(({
   categoryList = [],
-  currentCategory,
   currentOrder,
-  onChangeCategory,
   onChangeOrder,
   orderList,
+  history,
+  match: { params: { category = '' } },
 }) => {
-  const categoryOptions = useCategories(categoryList);
+  const defaultCategoryOption = {
+    key: 'category',
+    text: 'category',
+    value: '',
+  };
+  const categoryOptions = useCategories([...categoryList]);
 
   return (
     <Container textAlign="right">
@@ -26,9 +29,9 @@ const Header = memo(({
       {' '}
       <Dropdown
         inline
-        value={currentCategory}
-        options={categoryOptions}
-        onChange={(e, { value }) => onChangeCategory(value)}
+        value={category}
+        options={[defaultCategoryOption, ...categoryOptions]}
+        onChange={(e, { value }) => history.push(`/${value}`)}
       />
       {' '}
       <Icon name="unordered list" />
@@ -46,32 +49,38 @@ const Header = memo(({
 
 Header.propTypes = {
   categoryList: PropTypes.arrayOf(PropTypes.object),
-  currentCategory: PropTypes.string,
   currentOrder: PropTypes.string.isRequired,
-  onChangeCategory: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      category: PropTypes.string,
+    }),
+  }),
   onChangeOrder: PropTypes.func.isRequired,
   orderList: dropdownType,
 };
 
 Header.defaultProps = {
   categoryList: [],
-  currentCategory: '',
+  match: { params: { category: '' } },
   orderList: [],
 };
 
 const mapStateToProps = ({
-  categories: { list: categoryList, currentCategory },
+  categories: { list: categoryList },
   order: { currentOrder, list: orderList },
 }) => ({
   categoryList,
-  currentCategory,
   currentOrder,
   orderList,
 });
 
 const mapDispatchToProps = {
-  onChangeCategory: setCurrentCategory,
   onChangeOrder: setCurrentOrder,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+const ConnectedHeader = connect(mapStateToProps, mapDispatchToProps)(Header);
+
+export default withRouter(ConnectedHeader);
