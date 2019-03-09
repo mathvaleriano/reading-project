@@ -1,41 +1,42 @@
-import React, { memo, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Feed, Container } from 'semantic-ui-react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { filter, orderBy } from 'lodash';
+import React, { memo, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { Feed, Container } from 'semantic-ui-react';
 import Header from './Header';
 import Post from '../Post';
 import {
   getPosts as getPostsAction,
   handleSetCurrentPost,
 } from '../../store/posts/actions';
-import {
-  getCategories as getCategoriesAction,
-} from '../../store/categories/actions';
 import { postType } from '../../types/post';
+import { getCategories as getCategoriesAction } from '../../store/categories/actions';
 
 const PostList = memo(({
-  currentCategory,
   currentOrder,
-  getPosts,
   getCategories,
+  getPosts,
   onSetCurrentPost,
   posts = [],
+  match: { params: { category } },
 }) => {
   const [postList, setPosts] = useState(posts);
 
   useEffect(() => {
-    getPosts();
     getCategories();
+    getPosts();
   }, []);
 
   useEffect(() => {
     const orderedList = orderBy(posts, currentOrder, 'desc');
-    const filteredList = filter(orderedList, { category: currentCategory });
+    const filteredList = category
+      ? filter(orderedList, { category })
+      : orderedList;
 
     setPosts(filteredList);
-  }, [posts, currentCategory, currentOrder]);
+  }, [posts, category, currentOrder]);
 
   return (
     <Container>
@@ -59,10 +60,14 @@ const PostList = memo(({
 });
 
 PostList.propTypes = {
-  currentCategory: PropTypes.string,
   currentOrder: PropTypes.string.isRequired,
   getCategories: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      category: PropTypes.string,
+    }),
+  }),
   onSetCurrentPost: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape(postType),
@@ -70,17 +75,15 @@ PostList.propTypes = {
 };
 
 PostList.defaultProps = {
-  currentCategory: '',
+  match: { params: { category: '' } },
   posts: [],
 };
 
 const mapStateToProps = ({
   posts: { posts },
-  categories: { currentCategory },
   order: { currentOrder },
 }) => ({
   posts,
-  currentCategory,
   currentOrder,
 });
 
@@ -90,7 +93,9 @@ const mapDispatchToProps = {
   onSetCurrentPost: handleSetCurrentPost,
 };
 
-export default connect(
+const ConnectedPostList = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(PostList);
+
+export default withRouter(ConnectedPostList);

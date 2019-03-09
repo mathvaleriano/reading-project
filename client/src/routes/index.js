@@ -10,6 +10,7 @@ import NotFound from '../pages/404';
 const routes = [
   { path: '/404', component: NotFound },
   { path: '/:category/:postId', component: PostDetail },
+  { path: '/:category', component: Home },
   { path: '/', component: Home },
 ];
 
