@@ -11,7 +11,6 @@ import {
   DOWN_VOTE_POST,
   UP_VOTE_POST,
   MANIPULATE_QTY_COMMENTS,
-  SET_CURRENT_POST_BY_ID,
 } from './types';
 import { getComments, setComments } from '../comments/actions';
 
