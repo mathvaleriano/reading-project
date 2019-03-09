@@ -51,7 +51,7 @@ export const handleGetPosts = request => async (dispatch) => {
   }
 };
 
-export const getPosts = id => handleGetPosts(postsApi.getPosts(id));
+export const getPosts = () => handleGetPosts(postsApi.getPosts());
 
 export const getPostsByCategory = category => handleGetPosts(
   postsApi.getPostsByCategory(category),
@@ -117,21 +117,18 @@ export const setCurrentPost = currentPost => ({
   payload: { currentPost },
 });
 
-export const setCurrentPostById = postId => ({
-  type: SET_CURRENT_POST_BY_ID,
-  payload: postId,
-});
-
-export const handleSetCurrentPost = currentPost => (dispatch) => {
-  const hasFullInfos = typeof currentPost === 'object';
-  const id = hasFullInfos ? currentPost.id : currentPost;
-  const fnSetCurrentPost = hasFullInfos ? setCurrentPost : setCurrentPostById;
-
-  dispatch(fnSetCurrentPost(currentPost));
-  
-  if (id) {
-    dispatch(getComments(id));
-  } else {
+export const handleSetCurrentPost = postId => async (dispatch) => {
+  try {
+    const post = await postsApi.getPosts(postId);
+    if (post.error) {
+      dispatch(setErrors(['Post not found']));
+    } else {
+      dispatch(getComments(postId));
+      dispatch(setCurrentPost(post));
+    }
+  } catch (e) {
+    dispatch(setErrors(['Request failed']));
+    dispatch(setCurrentPost());
     dispatch(setComments());
   }
 };

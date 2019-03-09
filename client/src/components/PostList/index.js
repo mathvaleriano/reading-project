@@ -9,7 +9,6 @@ import Header from './Header';
 import Post from '../Post';
 import {
   getPosts as getPostsAction,
-  handleSetCurrentPost,
 } from '../../store/posts/actions';
 import { postType } from '../../types/post';
 import { getCategories as getCategoriesAction } from '../../store/categories/actions';
@@ -18,7 +17,7 @@ const PostList = memo(({
   currentOrder,
   getCategories,
   getPosts,
-  onSetCurrentPost,
+  history,
   posts = [],
   match: { params: { category } },
 }) => {
@@ -48,7 +47,7 @@ const PostList = memo(({
               <Post
                 post={post}
                 key={post.id}
-                onClickComments={() => onSetCurrentPost(post)}
+                onClickComments={() => history.push(`/${category}/${post.id}`)}
               />
             )
           ))
@@ -63,12 +62,14 @@ PostList.propTypes = {
   currentOrder: PropTypes.string.isRequired,
   getCategories: PropTypes.func.isRequired,
   getPosts: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       category: PropTypes.string,
     }),
   }),
-  onSetCurrentPost: PropTypes.func.isRequired,
   posts: PropTypes.arrayOf(
     PropTypes.shape(postType),
   ),
@@ -90,7 +91,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   getCategories: getCategoriesAction,
   getPosts: getPostsAction,
-  onSetCurrentPost: handleSetCurrentPost,
 };
 
 const ConnectedPostList = connect(
